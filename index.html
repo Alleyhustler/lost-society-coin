@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Lost Society Coin | Digital Cemetery of Failed Coins</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Special+Elite&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6' fill='none' stroke='white' stroke-width='1'/></svg>"), auto;
+        }
+        
+        body {
+            background-color: #000;
+            color: #e0e0e0;
+            font-family: 'Special Elite', cursive;
+            overflow-x: hidden;
+            height: 100vh;
+            width: 100vw;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(120, 120, 120, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(120, 120, 120, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 120, 120, 0.05) 0%, transparent 50%);
+        }
+        
+        /* Landing Page */
+        #landing {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #000;
+            z-index: 100;
+            transition: opacity 1.5s ease-out;
+        }
+        
+        #landing.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .logo-img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+            background: linear-gradient(45deg, #333, #666);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid #666;
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 2px;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+            font-size: 1.8rem;
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 2rem;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #666 }
+        }
+        
+        .title {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 3.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .enter-btn {
+            background: transparent;
+            border: 1px solid #555;
+            color: #ccc;
+            padding: 1rem 2rem;
+            font-family: 'Special Elite', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .enter-btn:hover {
+            color: #fff;
+            border-color: #fff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        .enter-btn::before {
+            content: '🕯️';
+            position: absolute;
+            left: -20px;
+            transition: all 0.3s ease;
+        }
+        
+        .enter-btn:hover::before {
+            left: 10px;
+        }
+        
+        /* Main Graveyard */
+        #graveyard {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 10;
+            border-bottom: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .header-logo-img {
+            height: 40px;
+            width: 40px;
+            background: linear-gradient(45deg, #333, #666);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .logo-text {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.5rem;
+            color: #fff;
+        }
+        
+        .motto {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .search-box {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 0.5rem 1rem;
+            font-family: 'Special Elite', cursive;
+            border-radius: 3px;
+            width: 200px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: #555;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 0.5rem 1rem;
+            font-family: 'Special Elite', cursive;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            border-color: #555;
+            color: #fff;
+        }
+        
+        .tombstones-container {
+            display: flex;
+            flex-direction: row;
+            padding-top: 200px;
+            padding-left: 50vw;
+            padding-bottom: 100px;
+            gap: 2rem;
+        }
+        
+        .tombstone {
+            width: 300px;
+            height: 450px;
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+        
+        .tombstone:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+            border-color: #555;
+        }
+        
+        .coin-name {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+        
+        .death-date {
+            color: #777;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .coin-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .epitaph {
+            font-style: italic;
+            color: #aaa;
+            line-height: 1.5;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0;
+        }
+        
+        .chart-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            border-radius: 5px;
+        }
+        
+        .chart-container {
+            width: 90%;
+            height: 60%;
+            position: relative;
+        }
+        
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.3));
+        }
+        
+        .chart-title {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #fff;
+            font-family: 'Cinzel Decorative', serif;
+        }
+        
+        .rip {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #333;
+            margin-top: 1rem;
+            font-family: 'Cinzel Decorative', serif;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #444;
+            background-color: rgba(0, 0, 0, 0.9);
+            border-top: 1px solid #333;
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            color: #666;
+            font-size: 0.8rem;
+            display: none;
+        }
+        
+        .memorial-count {
+            color: #777;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+        }
+        
+        .coin-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6666;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.7rem;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            bottom: 50%;
+            right: 20px;
+            color: #666;
+            font-size: 0.8rem;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            opacity: 0.7;
+            animation: fade-pulse 2s infinite;
+        }
+        
+        .twitter-link {
+            color: #1DA1F2;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-align: center;
+        }
+        
+        .twitter-link:hover {
+            text-decoration: underline;
+        }
+        
+        .twitter-handle {
+            color: #666;
+            font-style: italic;
+        }
+        
+        @keyframes fade-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .typewriter {
+                font-size: 1.2rem;
+            }
+            
+            .tombstones-container {
+                padding-left: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tombstone {
+                width: 90%;
+                max-width: 300px;
+                margin-bottom: 2rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing">
+        <!-- REPLACE THE SRC WITH YOUR ACTUAL LOGO PATH -->
+        <img src="Progetto_senza_titolo__1___1_-removebg-preview.png" alt="Dead Coin Society Logo" class="logo-img">
+        <div class="typewriter">"In the shadows of failure, a new truth takes root."</div>
+        <h1 class="title">Lost Society Coin</h1>
+        <a href="https://twitter.com/LostSocietyCoin" class="twitter-link" target="_blank">Follow our digital obituaries <span class="twitter-handle">@deadcoinsociety</span></a>
+        <button class="enter-btn" id="enterBtn">Enter the Tomb</button>
+    </div>
+    
+    <!-- Main Graveyard -->
+    <div id="graveyard">
+        <div class="header">
+            <div class="header-logo">
+                <img src="Progetto_senza_titolo__1___1_-removebg-preview.png" alt="Dead Coin Society Logo" class="logo-img">
+                <div class="logo-text"> Lost Society Coin</div>
+                <div class="memorial-count" id="memorialCount">Memorial Count: 0</div>
+            </div>
+            <div class="controls">
+                <input type="text" class="search-box" id="searchBox" placeholder="Search the dead...">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="rug">Rugs</button>
+                <button class="filter-btn" data-filter="stable">Stables</button>
+                <button class="filter-btn" data-filter="meme">Memes</button>
+            </div>
+            <div class="motto">"They died for your sins. You mint for their memory."</div>
+        </div>
+        
+        <div class="tombstones-container" id="tombstonesContainer">
+            <!-- Tombstones will be added dynamically -->
+        </div>
+        
+        <div class="scroll-indicator">Scroll to explore →</div>
+        <div class="loading-indicator" id="loadingIndicator">Excavating more graves...</div>
+        
+        <div class="footer">
+            A digital necropolis for the fallen. Not financial advice. Not a promotion. Just memory.
+            <br>
+            <a href="https://twitter.com/LostSocietyCoin" class="twitter-link" target="_blank">Follow our digital obituaries <span class="twitter-handle">@LostSocietyCoin</span></a>
+        </div>
+    </div>
+    
+    <script>
+        // Extended dead coins data with Twitter handles
+        const deadCoins = [
+            {
+                name: "Rugus Maximus",
+                deathDate: "March 15, 2022",
+                epitaph: "Promised the moon, delivered the rug.",
+                type: "rug",
+                marketCap: "$50M",
+                lifespan: "3 days",
+                twitter: "@RugusMaximusETH"
+            },
+            {
+                name: "Candle Inu",
+                deathDate: "January 5, 2023",
+                epitaph: "Bought top, died bottom.",
+                type: "meme",
+                marketCap: "$2M",
+                lifespan: "2 weeks",
+                twitter: "@CandleInuDead"
+            },
+            {
+                name: "Safemoon 2.0",
+                deathDate: "November 11, 2021",
+                epitaph: "Reflections in the void.",
+                type: "rug",
+                marketCap: "$1B",
+                lifespan: "6 months",
+                twitter: "@SafemoonRIP"
+            },
+            {
+                name: "Titanium Doge",
+                deathDate: "July 4, 2022",
+                epitaph: "Much wow. Very dead.",
+                type: "meme",
+                marketCap: "$100K",
+                lifespan: "1 day",
+                twitter: "@TitaniumDogeX"
+            },
+            {
+                name: "Luna Classic",
+                deathDate: "May 9, 2022",
+                epitaph: "Algorithm failed to stabilize.",
+                type: "stable",
+                marketCap: "$80B",
+                lifespan: "3 years",
+                twitter: "@LunaClassicRIP"
+            },
+            {
+                name: "Ponzi Protocol",
+                deathDate: "February 29, 2023",
+                epitaph: "Last one in got nothing.",
+                type: "rug",
+                marketCap: "$5M",
+                lifespan: "1 week",
+                twitter: "@PonziProtocolX"
+            },
+            {
+                name: "Fantom Ghost",
+                deathDate: "September 13, 2022",
+                epitaph: "Disappeared into the chain.",
+                type: "other",
+                marketCap: "$30M",
+                lifespan: "1 month",
+                twitter: "@FantomGhostX"
+            },
+            {
+                name: "Vaporware Coin",
+                deathDate: "December 25, 2021",
+                epitaph: "Never existed, still rugged.",
+                type: "rug",
+                marketCap: "$0",
+                lifespan: "0 days",
+                twitter: "@VaporwareCoinX"
+            },
+            {
+                name: "Diamond Hands Token",
+                deathDate: "August 17, 2022",
+                epitaph: "Hands turned to dust.",
+                type: "meme",
+                marketCap: "$8M",
+                lifespan: "3 weeks",
+                twitter: "@DiamondHandsDead"
+            },
+            {
+                name: "Infinite Yield",
+                deathDate: "April 1, 2022",
+                epitaph: "Yield went to zero.",
+                type: "other",
+                marketCap: "$15M",
+                lifespan: "2 months",
+                twitter: "@InfiniteYieldX"
+            },
+            {
+                name: "Moon Mission",
+                deathDate: "June 30, 2022",
+                epitaph: "Crashed before takeoff.",
+                type: "meme",
+                marketCap: "$3M",
+                lifespan: "5 days",
+                twitter: "@MoonMissionDead"
+            },
+            {
+                name: "Stable Genius",
+                deathDate: "October 15, 2022",
+                epitaph: "Stability was an illusion.",
+                type: "stable",
+                marketCap: "$25M",
+                lifespan: "4 months",
+                twitter: "@StableGeniusX"
+            }
+        ];
+        
+        let currentFilter = 'all';
+        let searchTerm = '';
+        let displayedCoins = [];
+        
+        // Generate random death chart
+        function generateDeathChart(coinName) {
+            const patterns = [
+                // Rug pull - sudden drop
+                '20,30 50,25 80,20 120,15 150,10 180,5 200,130 250,130 280,130',
+                // Slow death - gradual decline
+                '20,30 50,40 80,55 120,70 150,85 180,100 220,115 250,125 280,130',
+                // Volatile death - up and down then crash
+                '20,80 50,30 80,70 120,20 150,60 180,10 220,50 250,5 280,130',
+                // Pump and dump
+                '20,120 50,90 80,60 120,20 150,10 180,5 220,130 250,130 280,130',
+                // Flat death - never moved
+                '20,80 50,80 80,80 120,80 150,80 180,80 220,80 250,80 280,80',
+                // Flash crash
+                '20,20 50,20 80,20 120,20 150,20 180,130 220,130 250,130 280,130'
+            ];
+            
+            const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+            return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='150' viewBox='0 0 300 150'><rect width='300' height='150' fill='%23000'/><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%23ff0000;stop-opacity:1' /><stop offset='100%25' style='stop-color:%23660000;stop-opacity:1' /></linearGradient></defs><polyline points='${pattern}' stroke='url(%23grad)' stroke-width='2' fill='none'/><text x='150' y='20' fill='%23666' text-anchor='middle' font-size='12'>Price Chart of Doom</text></svg>`;
+        }
+        
+        // Create tombstone element
+        function createTombstone(coin) {
+            const tombstone = document.createElement('div');
+            tombstone.className = 'tombstone';
+            tombstone.setAttribute('data-type', coin.type);
+            
+            const twitterLink = coin.twitter ? 
+                `<a href="https://twitter.com/${coin.twitter.replace('@', '')}" class="twitter-link" target="_blank">${coin.twitter}</a>` : 
+                '<div class="twitter-link">(Twitter deleted)</div>';
+            
+            tombstone.innerHTML = `
+                <div class="coin-type">${coin.type.toUpperCase()}</div>
+                <div class="coin-name">${coin.name}</div>
+                ${twitterLink}
+                <div class="death-date">Died: ${coin.deathDate}</div>
+                <div class="coin-stats">
+                    <span>Peak: ${coin.marketCap}</span>
+                    <span>Lived: ${coin.lifespan}</span>
+                </div>
+                <div class="epitaph">"${coin.epitaph}"</div>
+                <div class="rip">R.I.P.</div>
+                <div class="chart-preview">
+                    <div class="chart-container">
+                        <div class="chart-title">${coin.name} - Final Chart</div>
+                        <svg class="chart-svg" viewBox="0 0 300 150">
+                            <rect width="300" height="150" fill="#000"/>
+                            <defs>
+                                <linearGradient id="grad-${coin.name.replace(/\s+/g, '')}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#ff0000;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#660000;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <polyline points="${getChartPattern(coin.type)}" stroke="url(#grad-${coin.name.replace(/\s+/g, '')})" stroke-width="2" fill="none"/>
+                            <text x="150" y="20" fill="#666" text-anchor="middle" font-size="12">Price Chart of Doom</text>
+                        </svg>
+                    </div>
+                </div>
+            `;
+            
+            // Hover effect for chart preview
+            tombstone.addEventListener('mouseenter', function() {
+                const preview = this.querySelector('.chart-preview');
+                preview.style.display = 'flex';
+            });
+            
+            tombstone.addEventListener('mouseleave', function() {
+                const preview = this.querySelector('.chart-preview');
+                preview.style.display = 'none';
+            });
+            
+            return tombstone;
+        }
+        
+        // Get chart pattern based on coin type
+        function getChartPattern(type) {
+            const patterns = {
+                'rug': '20,30 50,25 80,20 120,15 150,10 180,5 200,130 250,130 280,130',
+                'stable': '20,80 50,80 80,80 120,80 150,80 180,130 220,130 250,130 280,130',
+                'meme': '20,120 50,30 80,90 120,20 150,80 180,10 220,130 250,130 280,130',
+                'other': '20,80 50,40 80,60 120,30 150,70 180,20 220,100 250,130 280,130'
+            };
+            return patterns[type] || patterns['other'];
+        }
+        
+        // Filter and search functionality
+        function filterCoins() {
+            const filtered = deadCoins.filter(coin => {
+                const matchesFilter = currentFilter === 'all' || coin.type === currentFilter;
+                const matchesSearch = searchTerm === '' || 
+                    coin.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    coin.epitaph.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (coin.twitter && coin.twitter.toLowerCase().includes(searchTerm.toLowerCase()));
+                return matchesFilter && matchesSearch;
+            });
+            
+            displayedCoins = filtered;
+            renderTombstones();
+        }
+        
+        // Render tombstones
+        function renderTombstones() {
+            const container = document.getElementById('tombstonesContainer');
+            container.innerHTML = '';
+            
+            displayedCoins.forEach(coin => {
+                const tombstone = createTombstone(coin);
+                container.appendChild(tombstone);
+            });
+            
+            // Update memorial count
+            document.getElementById('memorialCount').textContent = `Memorial Count: ${displayedCoins.length}`;
+        }
+        
+        // Enter button functionality
+        document.getElementById('enterBtn').addEventListener('click', function() {
+            const landing = document.getElementById('landing');
+            landing.classList.add('fade-out');
+            
+            setTimeout(() => {
+                landing.style.display = 'none';
+                const graveyard = document.getElementById('graveyard');
+                graveyard.style.display = 'block';
+                
+                // Initialize with all coins
+                displayedCoins = deadCoins;
+                renderTombstones();
+            }, 1500);
+        });
+        
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            searchTerm = e.target.value;
+            filterCoins();
+        });
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                currentFilter = this.getAttribute('data-filter');
+                filterCoins();
+            });
+        });
+        
+        // Infinite scroll simulation
+        window.addEventListener('scroll', function() {
+            const scrollLeft = window.scrollX;
+            const windowWidth = window.innerWidth;
+            const documentWidth = document.documentElement.scrollWidth;
+            
+            if (scrollLeft + windowWidth >= documentWidth - 500) {
+                // Show loading indicator
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                loadingIndicator.style.display = 'block';
+                
+                // Simulate loading more coins
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    // In a real app, you'd load more data here
+                }, 1000);
+            }
+        });
+        
+        // Add some ambient effects
+        setInterval(() => {
+            const tombstones = document.querySelectorAll('.tombstone');
+            const randomTombstone = tombstones[Math.floor(Math.random() * tombstones.length)];
+            if (randomTombstone) {
+                randomTombstone.style.boxShadow = '0 5px 25px rgba(255, 0, 0, 0.1)';
+                setTimeout(() => {
+                    randomTombstone.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.5)';
+                }, 2000);
+            }
+        }, 10000);
+    </script>
+</body>
+</html>
